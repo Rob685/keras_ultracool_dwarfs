@@ -14,17 +14,19 @@ from collections import *
 import numpy as np
 import seaborn as sns
 import sys
-%matplotlib inline
-sys.setrecursionlimit(10000)
-rcParams['figure.figsize'] = 7, 5
+#%matplotlib inline
+#sys.setrecursionlimit(10000)
+#rcParams['figure.figsize'] = 7, 5
 
 Dwarfs = pd.read_csv('/Users/Helios/Desktop/Research/CoolStars_Data/Dwarfs_n2.csv')
-print(Dwarfs['abs_spt'])
+#print(Dwarfs['abs_spt'])
 #To do: change all the absolute sptype strings into integers, then run the plot below.
 #To do: make a polynomial fit using lmplot. Get the equation to predict sptype value based on i - z value.
 
+
+#The integers are added so that the boxplot understands what to plot.
 sps = Dwarfs['abs_spt']
-D1 = sps.replace([sps[sps.str.contains('M0')]], '0')
+D1 = sps.replace([sps[sps.str.contains('M0')]], '0') #simplify these and automate the process
 D2 = D1.replace([D1[D1.str.contains('M1')]], '1')
 D3 = D2.replace([D2[D2.str.contains('M2')]], '2')
 D4 = D3.replace([D3[D3.str.contains('M3')]], '3')
@@ -49,10 +51,7 @@ D20 = D17.replace([D17[D17.str.contains('L9')]], '19')
 print(D17)
 Counter(D17)
 
-enum_dwarfs = D17
-enum_dwarfs
-
-Dwarfs.insert(loc=0, column='num_spt', value=enum_dwarfs)
+Dwarfs.insert(loc=0, column='num_spt', value=D17) #changed here
 Dwarfs.drop(Dwarfs.tail(2).index,inplace=True)
 print(Dwarfs['num_spt'])
 
