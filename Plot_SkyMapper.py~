@@ -40,11 +40,11 @@ print((time.time() - start) / 60.)
     
 # Plot the data when the loop is finished
 plt.scatter(i_z, r_i, s = 5, c= 'k', alpha=0.1)
-plt.xlabel(r'i - z')
-plt.ylabel(r'r - i')
+plt.xlabel(r'I - Z')
+plt.ylabel(r'R - I')
 plt.xlim(0, 4)
 plt.ylim(0, 4)
-plt.title('r - i v. i - z: All SkyMapper')
+plt.title('R - I v. I - Z: All SkyMapper')
 plt.show()
 
 plt.scatter(r_i, g_r, s = 5, c= 'k', alpha=0.1)
