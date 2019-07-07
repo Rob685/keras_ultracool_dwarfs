@@ -5,9 +5,7 @@ Created on Mon Nov 26 17:29:00 2018
 
 @author: Helios
 """
-
-"""This script automatically selects the magnitudes for features and isolates the labels. It combines all the features to get all the combinations for color space, and it runs XGBoost for all magnitudes and colors. It also produces a feature plot and an accuracy distribution histogram."""
-
+#see console2a
 import pandas as pd
 import numpy as np
 from collections import Counter
