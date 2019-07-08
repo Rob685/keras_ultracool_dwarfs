@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-"""This is a test file for Atom. -Rob"""
+"""This is a test file for Atom. - Rob"""
 
 x = np.arange(0, 2.0*np.pi, 0.001)
 y = np.sin(x)
