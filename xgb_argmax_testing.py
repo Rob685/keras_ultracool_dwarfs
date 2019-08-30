@@ -19,40 +19,31 @@ def abs_mag(p, m):
 train['M_G'] = abs_mag(train['parallax'].values,
                     train['phot_g_mean_mag'].values)
 
-
-def ccombinator(y):
-    mags = pd.DataFrame(index=y.index)
-    for a, b, in combinations(y.columns, 2):
-        mags1['{}-{}'.format(a, b)] = y[a] - y[b]
-    c = mags1.join(mags2)
-    return c
-
-
 best_preds, best_model, best_results = xgbooster.XGBoost_Model(train,0.50,50)
 
 results = best_model.evals_result()
-epochs = len(best_results['validation_0']['error'])
-x_axis = range(0, epochs)
+epochs = range(len(best_results['validation_0']['error']))
 # plot log loss
 fig, ax = plt.subplots(3,1,figsize = (10,10))
-ax[0].plot(x_axis, results['validation_0']['logloss'], 'k--',label='Train')
-ax[0].plot(x_axis, results['validation_1']['logloss'], label='Validation',lw=6,alpha=0.5)
+ax[0].plot(epochs, results['validation_0']['logloss'], 'k--',label='Train')
+ax[0].plot(epochs, results['validation_1']['logloss'], label='Validation',lw=6,alpha=0.5)
 ax[0].legend()
 ax[0].set_ylabel('Log Loss')
 
-ax[1].plot(x_axis, results['validation_0']['error'], 'k--',label='Train')
-ax[1].plot(x_axis, results['validation_1']['error'], label='Validation',lw=5,alpha=0.5)
+ax[1].plot(epochs, results['validation_0']['error'], 'k--',label='Train')
+ax[1].plot(epochs, results['validation_1']['error'], label='Validation',lw=5,alpha=0.5)
 ax[1].legend()
 ax[1].set_ylabel('Classification Error')
 
-ax[2].plot(x_axis, results['validation_0']['rmse'], 'k--',label='Train')
-ax[2].plot(x_axis, results['validation_1']['rmse'], label='Validation',lw=5,alpha=0.5)
+ax[2].plot(epochs, results['validation_0']['rmse'], 'k--',label='Train')
+ax[2].plot(epochs, results['validation_1']['rmse'], label='Validation',lw=5,alpha=0.5)
 ax[2].legend()
 ax[2].set_ylabel('RMS Error')
 
-plt.savefig('xgb_metric_plots_100n_estimators_conservative.pdf')
 plt.tight_layout()
-plt.show()
+plt.savefig('/Users/roberttejada/coolstarsucsd/xgb_metric_plots_skymapper_100iters.pdf')
+
+
 
 skymapper_refset = pd.read_csv('/Users/roberttejada/Desktop/gaia_data_ml/skymapper_merged_all.csv')
 
@@ -158,5 +149,4 @@ blue_patch = mpatches.Patch(color=b, label='giants')
 sns.reset_orig
 plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
-plt.savefig('skymapper_xgb_predictions_gaia_100_nestimators_conservative.pdf')
-plt.show()
+plt.savefig('/Users/roberttejada/coolstarsucsd/skymapper_xgb_predictions_gaiaplot.pdf')
