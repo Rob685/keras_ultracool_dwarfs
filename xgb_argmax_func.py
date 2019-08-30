@@ -72,13 +72,13 @@ def XGBoost_Model(train_data, test_size, n_iter):
     avg_accuracy = np.mean(accuracy_arr)
     sigma = np.std(accuracy_arr)
 
-    print("Accuracy Standard Deviation: %.8f" % sigma)
+    print("Accuracy Standard Deviation: %.10f" % sigma)
     print('\n')
     print("Average Accuracy: %.10f%%" % (avg_accuracy*100))
     print('\n')
-    print("Max Accuracy:", np.max(accuracy_arr))
+    print("Max Accuracy:", np.max(accuracy_arr)*100)
 
-    plt.hist(accuracy_arr, histtype='step', bins=15, color='k')
+    plt.hist(accuracy_arr, histtype='step', bins='sqrt', color='k')
     plt.xlabel('Accuracy Score')
     plt.ylabel('Frequency of Occurence')
     plt.title('Accuracy Distribution')
