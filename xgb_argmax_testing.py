@@ -16,14 +16,12 @@ train = pd.read_csv('/Users/roberttejada/Desktop/gaia_data_ml/all_gaiasmdata_rea
 def abs_mag(p, m):
     return m - 5*np.log10((1000/(p)).astype(np.float64)) + 5
 
-
 train['M_G'] = abs_mag(train['parallax'].values,
                     train['phot_g_mean_mag'].values)
 
 
 def ccombinator(y):
-    mags1 = pd.DataFrame(index=y.index)
-    mags2 = pd.DataFrame(index=y.index)
+    mags = pd.DataFrame(index=y.index)
     for a, b, in combinations(y.columns, 2):
         mags1['{}-{}'.format(a, b)] = y[a] - y[b]
     c = mags1.join(mags2)
@@ -31,8 +29,6 @@ def ccombinator(y):
 
 
 best_preds, best_model, best_results = xgbooster.XGBoost_Model(train,0.50,50)
-
-
 
 results = best_model.evals_result()
 epochs = len(best_results['validation_0']['error'])
@@ -81,7 +77,7 @@ print('refset read')
 # In[10]:
 
 
-features_colors = ccombinator(refset_4preds)
+features_colors = xgbooster.XGBoost_Model.ccombinator(refset_4preds)
 
 features_ref = features_colors.join(refset_4preds, how='outer')
 
@@ -131,17 +127,6 @@ print('Giant predictions:', len(giants_pred))
 print('Dwarf predictions:',len(dwarfs_pred))
 
 
-# In[ ]:
-
-
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif',size=17)
-plt.rc('axes', linewidth=
-
-
-# In[ ]:
-
-
 sns.set_style("white")
 
 plt.figure(figsize=(10,8))
@@ -175,6 +160,3 @@ plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
 plt.savefig('skymapper_xgb_predictions_gaia_100_nestimators_conservative.pdf')
 plt.show()
-
-
-# In[ ]:

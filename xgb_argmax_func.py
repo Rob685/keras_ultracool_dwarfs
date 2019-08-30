@@ -22,10 +22,10 @@ def XGBoost_Model(train_data, test_size, n_iter):
 
     # Combination function:
     def ccombinator(y):
-        mags1 = pd.DataFrame(index=y.index)
+        mags = pd.DataFrame(index=y.index)
         for a, b, in combinations(y.columns, 2):
             mags['{}-{}'.format(a, b)] = y[a] - y[b]
-        c = mags1
+        c = mags
         return c
 
     train_colors = ccombinator(tmags3).join(tmags3, how='outer')
