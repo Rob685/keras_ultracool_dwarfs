@@ -29,7 +29,7 @@ def ccombinator(y):
 train['M_G'] = abs_mag(train['parallax'].values,
                        train['phot_g_mean_mag'].values)
 
-best_preds, best_model, best_results = xgbooster.XGBoost_Model(train, 0.50, 50)
+best_preds, best_model, best_results = xgbooster.XGBoost_Model(train, 0.50, 100)
 
 results = best_model.evals_result()
 epochs = range(len(best_results['validation_0']['error']))
@@ -94,14 +94,13 @@ df = refset[['object_id', 'xgb_predictions']]
 
 smrefset_wpreds = skymapper_refset.merge(df, how='inner', on='object_id')
 
-
 # In[ ]:
 
 
 g_rp = smrefset_wpreds['phot_g_mean_mag'] - smrefset_wpreds['phot_rp_mean_mag']
 
 smrefset_wpreds['g_rp'] = g_rp
-
+smrefset_wpreds.to_csv('/Users/roberttejada/Desktop/gaia_data_ml/skymapper_refset_wpredictions.csv')
 
 # In[ ]:
 
