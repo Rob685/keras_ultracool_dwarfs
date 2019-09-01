@@ -89,7 +89,7 @@ def XGBoost_Model(train_data, feature_list, labels, test_size, n_iter):
     plt.xlabel('Accuracy Score')
     plt.ylabel('Frequency of Occurence')
     plt.title('Accuracy Distribution')
-    plt.savefig('/Users/roberttejada/coolstarsucsd/accuracy_distribution_training.pdf')
+    plt.savefig('/Users/roberttejada/coolstarsucsd/accuracy_distribution_training_80train.pdf')
 
     best_preds = prediction_arr[np.argmax(accuracy_arr)]
     best_model = model_arr[np.argmax(accuracy_arr)]
