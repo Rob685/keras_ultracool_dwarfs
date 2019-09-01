@@ -99,4 +99,7 @@ def XGBoost_Model(train_data, feature_list, labels, test_size, n_iter):
     print('Confusion Matrix:', conmatrix)
     print('Best Training predictions:', Counter(best_preds))
 
+    plot_importance(best_model)
+    plt.savefig('/Users/roberttejada/coolstarsucsd/feature_importance_plot.pdf')
+
     return best_preds, best_model, best_results, all_results
