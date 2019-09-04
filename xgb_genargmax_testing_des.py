@@ -57,7 +57,7 @@ plt.savefig('/Users/roberttejada/coolstarsucsd/xgb_metric_plots_des_80train.pdf'
 
 
 target_refset = pd.read_csv(
-    '/Users/roberttejada/Desktop/des_gaia_data_ml/all_des_refset.csv.csv')
+    '/Users/roberttejada/Desktop/des_gaia_data_ml/all_des_refset.csv')
 
 target_refset['M_G'] = abs_mag(target_refset['parallax'].values,
                                target_refset['phot_g_mean_mag'].values)
