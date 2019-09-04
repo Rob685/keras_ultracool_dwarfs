@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 from itertools import combinations
 import seaborn as sns
-
+import pickle
 
 def XGBoost_Model(train_data, feature_list, labels, test_size, n_iter):
     """
@@ -83,7 +83,7 @@ def XGBoost_Model(train_data, feature_list, labels, test_size, n_iter):
     print('\n')
     print("Average Accuracy: %.10f%%" % (avg_accuracy*100))
     print('\n')
-    print("Max Accuracy: %.10f%%" %  np.max(accuracy_arr)*100)
+    print("Max Accuracy: %.10f%%" %  (np.max(accuracy_arr)*100))
 
     plt.hist(accuracy_arr, histtype='step', bins='sqrt', color='k')
     plt.xlabel('Accuracy Score')
@@ -92,9 +92,14 @@ def XGBoost_Model(train_data, feature_list, labels, test_size, n_iter):
     plt.savefig('/Users/roberttejada/coolstarsucsd/accuracy_distribution_training_80train.pdf')
 
     best_preds = prediction_arr[np.argmax(accuracy_arr)]
+
     best_model = model_arr[np.argmax(accuracy_arr)]
+    pickle.dump(best_model, open("best_model.txt", "wb"))
     best_results = results_arr[np.argmax(accuracy_arr)]
+    pickle.dump(best_results, open("best_results.txt", "wb"))
     all_results = [accuracy_arr, prediction_arr, results_arr, model_arr]
+    pickle.dump(all_results, open("best_model.txt","wb"))
+
     conmatrix = confusion_matrix(y_test, best_preds)
     print('Confusion Matrix:', conmatrix)
     print('Best Training predictions:', Counter(best_preds))

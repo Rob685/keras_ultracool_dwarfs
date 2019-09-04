@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 from matplotlib.colors import LogNorm
+import pickle
 
 train = pd.read_csv('/Users/roberttejada/Desktop/gaia_data_ml/all_gaiasmdata_readyforml.csv')
 
@@ -32,7 +33,7 @@ train['M_G'] = abs_mag(train['parallax'].values,
 flist = ['i_psf', 'z_psf', 'h_m', 'j_m', 'k_m', 'w1mpro', 'w2mpro']
 label_list = ['label']
 
-best_preds, best_model, best_results,all_results_skymapper = xgbooster.XGBoost_Model(train, flist, label_list, 0.20, 5)
+best_preds, best_model, best_results,all_results_skymapper = xgbooster.XGBoost_Model(train, flist, label_list, 0.20, 100)
 
 results = best_model.evals_result()
 epochs = range(len(best_results['validation_0']['error']))

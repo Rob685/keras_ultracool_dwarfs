@@ -83,7 +83,7 @@ def XGBoost_Model(train_data, feature_list, labels, test_size, n_iter):
     print('\n')
     print("Average Accuracy: %.10f%%" % (avg_accuracy*100))
     print('\n')
-    print("Max Accuracy:", np.max(accuracy_arr)*100)
+    print("Max Accuracy: %.10f%%" %  np.max(accuracy_arr)*100)
 
     plt.hist(accuracy_arr, histtype='step', bins='sqrt', color='k')
     plt.xlabel('Accuracy Score')
