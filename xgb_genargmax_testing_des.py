@@ -28,7 +28,7 @@ def ccombinator(y):
 
 
 flist = ['MAG_AUTO_I', 'MAG_AUTO_Z', 'h_m', 'j_m', 'k_m', 'w1mpro', 'w2mpro']
-label_list = ['label']
+label_list = ['labels']
 
 best_preds, best_model, best_results, all_results_skymapper = xgbooster.XGBoost_Model(
     'DES', train, flist, label_list, 0.20, 100)
