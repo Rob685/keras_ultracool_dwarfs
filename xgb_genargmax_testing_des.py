@@ -1,4 +1,4 @@
-import xgb_argmax_func as xgbooster
+import xgb_general_argmax_func as xgbooster
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 from itertools import combinations
@@ -10,8 +10,13 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 from matplotlib.colors import LogNorm
+import pickle
 
 train = pd.read_csv('/Users/roberttejada/Desktop/des_gaia_data_ml/des_training_set.csv')
+
+
+def abs_mag(p, m):
+    return m - 5*np.log10((1000/(p)).astype(np.float64)) + 5
 
 
 def ccombinator(y):
@@ -22,11 +27,14 @@ def ccombinator(y):
     return c
 
 
-def abs_mag(p, m):
-    return m - 5*np.log10((1000/(p)).astype(np.float64)) + 5
+train['M_G'] = abs_mag(train['parallax'].values,
+                       train['phot_g_mean_mag'].values)
 
+flist = ['MAG_AUTO_I', 'MAG_AUTO_Z', 'h_m', 'j_m', 'k_m', 'w1mpro', 'w2mpro']
+label_list = ['label']
 
-best_preds, best_model, best_results = xgbooster.XGBoost_Model(train, 0.50, 5)
+best_preds, best_model, best_results, all_results_skymapper = xgbooster.XGBoost_Model(
+    'DES', train, flist, label_list, 0.20, 100)
 
 results = best_model.evals_result()
 epochs = range(len(best_results['validation_0']['error']))
@@ -48,19 +56,19 @@ ax[2].legend()
 ax[2].set_ylabel('RMS Error')
 
 plt.tight_layout()
-plt.savefig('/Users/roberttejada/coolstarsucsd/xgb_metric_plots_des_100iters.pdf')
+plt.savefig('/Users/roberttejada/coolstarsucsd/xgb_metric_plots_des_80train.pdf')
 
 
-des_refset = pd.read_csv(
+refset = pd.read_csv(
     '/Users/roberttejada/Desktop/des_gaia_data_ml/des_refset_gaia_allwise_twomass_sdss12.csv')
 
-des_refset['M_G'] = abs_mag(des_refset['parallax'].values,
-                            des_refset['phot_g_mean_mag'].values)
+refset['M_G'] = abs_mag(refset['parallax'].values,
+                        refset['phot_g_mean_mag'].values)
 
-refset = des_refset[['object_id', 'i_psf', 'z_psf',
-                     'Hmag_x', 'Jmag_x', 'Kmag_x', 'W1mag', 'W2mag'
-                     # ,'M_G'
-                     ]].dropna(how='any')
+refset = refset[['object_id', 'MAG_AUTO_I', 'MAG_AUTO_Z',
+                 'Hmag_x', 'Jmag_x', 'Kmag_x', 'W1mag', 'W2mag'
+                           # ,'M_G'
+                 ]].dropna(how='any')
 
 refset_4preds = refset[['i_psf', 'z_psf',
                         'Hmag_x', 'Jmag_x', 'Kmag_x', 'W1mag', 'W2mag'
@@ -98,7 +106,8 @@ smrefset_wpreds = skymapper_refset.merge(df, how='inner', on='object_id')
 g_rp = smrefset_wpreds['phot_g_mean_mag'] - smrefset_wpreds['phot_rp_mean_mag']
 
 smrefset_wpreds['g_rp'] = g_rp
-smrefset_wpreds.to_csv('/Users/roberttejada/Desktop/gaia_data_ml/skymapper_refset_wpredictions.csv')
+smrefset_wpreds.to_csv(
+    '/Users/roberttejada/Desktop/gaia_data_ml/skymapper_refset_wpredictions_80train.csv')
 
 # In[ ]:
 
@@ -155,4 +164,4 @@ blue_patch = mpatches.Patch(color=b, label='giants')
 sns.reset_orig
 plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
-plt.savefig('/Users/roberttejada/coolstarsucsd/skymapper_xgb_predictions_gaiaplot.pdf')
+plt.savefig('/Users/roberttejada/coolstarsucsd/skymapper_xgb_predictions_gaiaplot_80train.pdf')

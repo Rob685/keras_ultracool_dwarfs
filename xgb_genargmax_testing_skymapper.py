@@ -33,7 +33,8 @@ train['M_G'] = abs_mag(train['parallax'].values,
 flist = ['i_psf', 'z_psf', 'h_m', 'j_m', 'k_m', 'w1mpro', 'w2mpro']
 label_list = ['label']
 
-best_preds, best_model, best_results,all_results_skymapper = xgbooster.XGBoost_Model(train, flist, label_list, 0.20, 100)
+best_preds, best_model, best_results, all_results_skymapper = xgbooster.XGBoost_Model(
+    'skymapper', train, flist, label_list, 0.20, 100)
 
 results = best_model.evals_result()
 epochs = range(len(best_results['validation_0']['error']))
