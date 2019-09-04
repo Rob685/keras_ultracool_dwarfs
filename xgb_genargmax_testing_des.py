@@ -63,17 +63,17 @@ target_refset['M_G'] = abs_mag(target_refset['parallax'].values,
                                target_refset['phot_g_mean_mag'].values)
 
 refset = target_refset[['object_id', 'MAG_AUTO_I', 'MAG_AUTO_Z',
-                        'Hmag_x', 'Jmag_x', 'Kmag_x', 'W1mag', 'W2mag'
+                        'Hmag', 'Jmag', 'Kmag', 'W1mag', 'W2mag'
                         # ,'M_G'
                         ]].dropna(how='any')
 
 refset_4preds = refset[['MAG_AUTO_I', 'MAG_AUTO_Z',
-                        'Hmag_x', 'Jmag_x', 'Kmag_x', 'W1mag', 'W2mag'
+                        'Hmag', 'Jmag', 'Kmag', 'W1mag', 'W2mag'
                         # ,'M_G'
                         ]]
 
-refset_4preds = refset_4preds.rename(index=str, columns={"Hmag_x": "h_m",
-                                                         "Jmag_x": "j_m", "Kmag_x": "k_m", "W1mag": "w1mpro", "W2mag": "w2mpro"})
+refset_4preds = refset_4preds.rename(index=str, columns={"Hmag": "h_m",
+                                                         "Jmag": "j_m", "Kmag": "k_m", "W1mag": "w1mpro", "W2mag": "w2mpro"})
 print('refset read')
 
 
