@@ -27,9 +27,6 @@ def ccombinator(y):
     return c
 
 
-train['M_G'] = abs_mag(train['parallax'].values,
-                       train['phot_g_mean_mag'].values)
-
 flist = ['MAG_AUTO_I', 'MAG_AUTO_Z', 'h_m', 'j_m', 'k_m', 'w1mpro', 'w2mpro']
 label_list = ['label']
 
@@ -62,8 +59,8 @@ plt.savefig('/Users/roberttejada/coolstarsucsd/xgb_metric_plots_des_80train.pdf'
 target_refset = pd.read_csv(
     '/Users/roberttejada/Desktop/des_gaia_data_ml/des_refset_gaia_allwise_twomass_sdss12.csv')
 
-target_refset['M_G'] = abs_mag(refset['parallax'].values,
-                               refset['phot_g_mean_mag'].values)
+target_refset['M_G'] = abs_mag(target_refset['parallax'].values,
+                               target_refset['phot_g_mean_mag'].values)
 
 refset = target_refset[['object_id', 'MAG_AUTO_I', 'MAG_AUTO_Z',
                         'Hmag_x', 'Jmag_x', 'Kmag_x', 'W1mag', 'W2mag'
@@ -98,12 +95,12 @@ refset.insert(loc=8, column='xgb_predictions', value=smpredictions)
 
 df = refset[['object_id', 'xgb_predictions']]
 
-refset_wpreds = refset.merge(df, how='inner', on='object_id')
+refset_wpreds = target_refset.merge(df, how='inner', on='object_id')
 
 # In[ ]:
 
 
-g_rp = smrefset_wpreds['phot_g_mean_mag'] - smrefset_wpreds['phot_rp_mean_mag']
+g_rp = refset_wpreds['phot_g_mean_mag'] - refset_wpreds['phot_rp_mean_mag']
 
 refset_wpreds['g_rp'] = g_rp
 refset_wpreds.to_csv(
@@ -121,8 +118,8 @@ refset_par = refset_wpreds[(refset_wpreds['parallax'] > 0)]
 gaia_test = refset_par[['g_rp', 'phot_g_mean_mag', 'parallax', 'M_G',
                         'xgb_predictions']].dropna(how='any')
 
-giants_pred = gaia_test[gaia_test['xgb_predictions'] == 'other']
-dwarfs_pred = gaia_test[gaia_test['xgb_predictions'] == 'lowmass*']
+giants_pred = gaia_test[gaia_test['xgb_predictions'] == 'giant']
+dwarfs_pred = gaia_test[gaia_test['xgb_predictions'] == 'dwarf']
 
 
 # In[ ]:
