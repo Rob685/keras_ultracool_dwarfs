@@ -44,18 +44,18 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     today = datetime.now()
     path = '/Users/roberttejada/coolstarsucsd/'
     directory = path + survey + today.strftime('%Y%m%d') + '/'
-    os.makedirs(directory
+    os.makedirs(directory)
 
-    accuracy_arr=[]
-    prediction_arr=[]
-    results_arr=[]
-    model_arr=[]
+    accuracy_arr = []
+    prediction_arr = []
+    results_arr = []
+    model_arr = []
     for i in range(n_iter):
-        test_size=0.50
-        X_train, X_test, y_train, y_test=train_test_split(
+        test_size = 0.50
+        X_train, X_test, y_train, y_test = train_test_split(
             train_colors, ytarget, test_size=test_size)
 
-        model=XGBClassifier(silent=False,
+        model = XGBClassifier(silent=False,
                               scale_pos_weight=0.5,
                               eta=0.1,
                               colsample_bytree=0.8,
@@ -68,14 +68,14 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
                               gamma=10,
                               tree_method='approx')
 
-        eval_set=[(X_train, y_train), (X_test, y_test)]
+        eval_set = [(X_train, y_train), (X_test, y_test)]
         model.fit(X_train, y_train, eval_metric=["error", "rmse", "logloss"],
                   eval_set=eval_set, verbose=True)
-        results=model.evals_result()
+        results = model.evals_result()
 
         # make predictions for test data
-        predictions=model.predict(X_test)
-        accuracy=accuracy_score(y_test, predictions)
+        predictions = model.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         print("Accuracy: %.10f%%" % (accuracy * 100.0))
         accuracy_arr.append(accuracy)
         prediction_arr.append(predictions)
@@ -84,8 +84,8 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
         results_arr.append(results)
         print('Finished with step:', i)
 
-    avg_accuracy=np.mean(accuracy_arr)
-    sigma=np.std(accuracy_arr)
+    avg_accuracy = np.mean(accuracy_arr)
+    sigma = np.std(accuracy_arr)
 
     print("Accuracy Standard Deviation: %.10f" % sigma)
     print('\n')
@@ -99,16 +99,16 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     plt.title('Accuracy Distribution')
     plt.savefig(directory + 'accuracy_distribution_training_80train.pdf')
 
-    best_preds=prediction_arr[np.argmax(accuracy_arr)]
+    best_preds = prediction_arr[np.argmax(accuracy_arr)]
 
-    best_model=model_arr[np.argmax(accuracy_arr)]
+    best_model = model_arr[np.argmax(accuracy_arr)]
     pickle.dump(best_model, open(directory + "best_model.txt", "wb"))
-    best_results=results_arr[np.argmax(accuracy_arr)]
+    best_results = results_arr[np.argmax(accuracy_arr)]
     pickle.dump(best_results, open(directory + "best_results.txt", "wb"))
-    all_results=[accuracy_arr, prediction_arr, results_arr, model_arr]
+    all_results = [accuracy_arr, prediction_arr, results_arr, model_arr]
     pickle.dump(all_results, open(directory + "best_model.txt", "wb"))
 
-    conmatrix=confusion_matrix(y_test, best_preds)
+    conmatrix = confusion_matrix(y_test, best_preds)
     print('Confusion Matrix:', conmatrix)
     print('Best Training predictions:', Counter(best_preds))
 
