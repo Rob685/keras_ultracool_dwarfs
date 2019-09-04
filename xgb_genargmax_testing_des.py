@@ -85,7 +85,7 @@ features_colors = ccombinator(refset_4preds)
 features_ref = features_colors.join(refset_4preds, how='outer')
 
 despredictions = best_model.predict(features_ref)
-print('SkyMapper Predictions:', Counter(despredictions))
+print('DES Predictions:', Counter(despredictions))
 
 
 # In[ ]:
@@ -93,9 +93,9 @@ print('SkyMapper Predictions:', Counter(despredictions))
 
 refset.insert(loc=8, column='xgb_predictions', value=smpredictions)
 
-df = refset[['object_id', 'xgb_predictions']]
+df = refset[['COADD_OBJECT_ID', 'xgb_predictions']]
 
-refset_wpreds = target_refset.merge(df, how='inner', on='object_id')
+refset_wpreds = target_refset.merge(df, how='inner', on='COADD_OBJECT_ID')
 
 # In[ ]:
 
@@ -148,7 +148,7 @@ plt.xlim(0.0, 2.5)
 # plt.legend()
 # plt.tight_layout()
 plt.gca().invert_yaxis()
-plt.title('SkyMapper Predictions: XGBoost')
+plt.title('DES Predictions: XGBoost')
 
 k = sns.color_palette("Greys")[2]
 b = sns.color_palette("Blues")[2]
