@@ -62,7 +62,7 @@ target_refset = pd.read_csv(
 target_refset['M_G'] = abs_mag(target_refset['parallax'].values,
                                target_refset['phot_g_mean_mag'].values)
 
-refset = target_refset[['object_id', 'MAG_AUTO_I', 'MAG_AUTO_Z',
+refset = target_refset[['COADD_OBJECT_ID', 'MAG_AUTO_I', 'MAG_AUTO_Z',
                         'Hmag', 'Jmag', 'Kmag', 'W1mag', 'W2mag'
                         # ,'M_G'
                         ]].dropna(how='any')
