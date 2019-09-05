@@ -43,7 +43,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     ytarget = tmags2[labels]
 
     today = datetime.now()
-    path = '/Users/roberttejada/coolstarsucsd/'
+    path = '/Users/roberttejada/Desktop/'
     directory = path + survey + today.strftime('%Y%m%d') + '/'
     os.makedirs(directory)
 
