@@ -53,7 +53,7 @@ ax[2].legend()
 ax[2].set_ylabel('RMS Error')
 
 plt.tight_layout()
-plt.savefig('/Users/roberttejada/Desktop/des_gaia_data_ml/xgb_metric_plots_des_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/des_xgb_results/xgb_metric_plots_des_80train.pdf')
 
 
 target_refset = pd.read_csv(
@@ -104,7 +104,7 @@ g_rp = refset_wpreds['phot_g_mean_mag'] - refset_wpreds['phot_rp_mean_mag']
 
 refset_wpreds['g_rp'] = g_rp
 refset_wpreds.to_csv(
-    '/Users/roberttejada/Desktop/des_gaia_data_ml/des_refset_wpredictions_80train.csv')
+    '/Users/roberttejada/Desktop/des_xgb_results/des_refset_wpredictions_80train.csv')
 
 # In[ ]:
 
@@ -126,6 +126,7 @@ dwarfs_pred = gaia_test[gaia_test['xgb_predictions'] == 'dwarf']
 
 
 print('giant/dwarf ratio is:', len(giants_pred)/len(dwarfs_pred))
+print('Length of training set:' len())
 print('Giant predictions:', len(giants_pred))
 print('Dwarf predictions:', len(dwarfs_pred))
 
@@ -161,4 +162,4 @@ blue_patch = mpatches.Patch(color=b, label='giants')
 sns.reset_orig
 plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
-plt.savefig('/Users/roberttejada/Desktop/des_gaia_data_ml/des_xgb_predictions_gaiaplot_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/des_xgb_results/des_xgb_predictions_gaiaplot_80train.pdf')
