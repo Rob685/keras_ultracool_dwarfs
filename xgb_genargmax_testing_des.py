@@ -53,7 +53,7 @@ ax[2].legend()
 ax[2].set_ylabel('RMS Error')
 
 plt.tight_layout()
-plt.savefig('/Users/roberttejada/coolstarsucsd/xgb_metric_plots_des_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/des_gaia_data_ml/xgb_metric_plots_des_80train.pdf')
 
 
 target_refset = pd.read_csv(
@@ -91,7 +91,7 @@ print('DES Predictions:', Counter(despredictions))
 # In[ ]:
 
 
-refset.insert(loc=8, column='xgb_predictions', value=smpredictions)
+refset.insert(loc=8, column='xgb_predictions', value=despredictions)
 
 df = refset[['COADD_OBJECT_ID', 'xgb_predictions']]
 
@@ -161,4 +161,4 @@ blue_patch = mpatches.Patch(color=b, label='giants')
 sns.reset_orig
 plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
-plt.savefig('/Users/roberttejada/coolstarsucsd/des_xgb_predictions_gaiaplot_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/des_gaia_data_ml/des_xgb_predictions_gaiaplot_80train.pdf')

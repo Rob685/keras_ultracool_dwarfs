@@ -52,7 +52,6 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     results_arr = []
     model_arr = []
     for i in range(n_iter):
-        test_size = 0.50
         X_train, X_test, y_train, y_test = train_test_split(
             train_colors, ytarget, test_size=test_size)
 
@@ -62,7 +61,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
                               colsample_bytree=0.8,
                               subsample=0.5,
                               objective='binary:logistic',
-                              n_estimators=100,
+                              n_estimators=200,
                               reg_alpha=0.5,
                               max_delta_step=5,
                               max_depth=10,
@@ -107,7 +106,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     best_results = results_arr[np.argmax(accuracy_arr)]
     pickle.dump(best_results, open(directory + "best_results.txt", "wb"))
     all_results = [accuracy_arr, prediction_arr, results_arr, model_arr]
-    pickle.dump(all_results, open(directory + "best_model.txt", "wb"))
+    pickle.dump(all_results, open(directory + "all_results.txt", "wb"))
 
     conmatrix = confusion_matrix(y_test, best_preds)
     print('Confusion Matrix:', conmatrix)
