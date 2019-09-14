@@ -27,7 +27,9 @@ def ccombinator(y):
     return c
 
 
-flist = ['MAG_AUTO_I', 'MAG_AUTO_Z', 'h_m', 'j_m', 'k_m', 'w1mpro', 'w2mpro']
+flist = ['MAG_AUTO_I', 'MAG_AUTO_Z',
+        #'h_m', 'j_m', 'k_m',
+        'w1mpro', 'w2mpro']
 label_list = ['labels']
 
 best_preds, best_model, best_results, all_results_skymapper = xgbooster.XGBoost_Model(
@@ -63,7 +65,8 @@ target_refset['M_G'] = abs_mag(target_refset['parallax'].values,
                                target_refset['phot_g_mean_mag'].values)
 
 refset = target_refset[['COADD_OBJECT_ID', 'MAG_AUTO_I', 'MAG_AUTO_Z',
-                        'Hmag', 'Jmag', 'Kmag', 'W1mag', 'W2mag'
+                        #'Hmag', 'Jmag', 'Kmag',
+                        'W1mag', 'W2mag'
                         # ,'M_G'
                         ]].dropna(how='any')
 
@@ -72,8 +75,10 @@ refset_4preds = refset[['MAG_AUTO_I', 'MAG_AUTO_Z',
                         # ,'M_G'
                         ]]
 
-refset_4preds = refset_4preds.rename(index=str, columns={"Hmag": "h_m",
-                                                         "Jmag": "j_m", "Kmag": "k_m", "W1mag": "w1mpro", "W2mag": "w2mpro"})
+refset_4preds = refset_4preds.rename(index=str, columns={#"Hmag": "h_m",
+                                                         #"Jmag": "j_m",
+                                                         #"Kmag": "k_m", 
+                                                         "W1mag": "w1mpro", "W2mag": "w2mpro"})
 print('refset read')
 
 
