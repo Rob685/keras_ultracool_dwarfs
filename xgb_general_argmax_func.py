@@ -41,7 +41,6 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
 
     train_colors = ccombinator(tmags3).join(tmags3, how='outer')
     ytarget = tmags2[labels]
-
     today = datetime.now()
     path = '/Users/roberttejada/Desktop/'
     directory = path + survey + today.strftime('%Y%m%d') + '/'
@@ -61,7 +60,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
                               colsample_bytree=0.8,
                               subsample=0.5,
                               objective='binary:logistic',
-                              n_estimators=200,
+                              n_estimators=100,
                               reg_alpha=0.5,
                               max_delta_step=5,
                               max_depth=10,
@@ -93,7 +92,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     print('\n')
     print("Max Accuracy: %.10f%%" % (np.max(accuracy_arr)*100))
 
-    plt.hist(accuracy_arr, histtype='step', bins='sqrt', color='k')
+    plt.hist(accuracy_arr, histtype='step', bins=100, color='k')
     plt.xlabel('Accuracy Score')
     plt.ylabel('Frequency of Occurence')
     plt.title('Accuracy Distribution')
@@ -114,5 +113,5 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
 
     plot_importance(best_model)
     plt.savefig(directory + 'feature_importance_plot.pdf')
-
+    print('Length of training set:', len(train_colors))
     return best_preds, best_model, best_results, all_results

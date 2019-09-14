@@ -56,7 +56,7 @@ ax[2].legend()
 ax[2].set_ylabel('RMS Error')
 
 plt.tight_layout()
-plt.savefig('/Users/roberttejada/coolstarsucsd/xgb_metric_plots_skymapper_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/sm_xgb_results/xgb_metric_plots_skymapper_80train.pdf')
 
 
 skymapper_refset = pd.read_csv('/Users/roberttejada/Desktop/gaia_data_ml/skymapper_merged_all.csv')
@@ -106,7 +106,7 @@ g_rp = smrefset_wpreds['phot_g_mean_mag'] - smrefset_wpreds['phot_rp_mean_mag']
 
 smrefset_wpreds['g_rp'] = g_rp
 smrefset_wpreds.to_csv(
-    '/Users/roberttejada/Desktop/gaia_data_ml/skymapper_refset_wpredictions_80train.csv')
+    '/Users/roberttejada/Desktop/sm_xgb_results/skymapper_refset_wpredictions_80train.csv')
 
 # In[ ]:
 
@@ -163,4 +163,4 @@ blue_patch = mpatches.Patch(color=b, label='giants')
 sns.reset_orig
 plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
-plt.savefig('/Users/roberttejada/coolstarsucsd/skymapper_xgb_predictions_gaiaplot_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/sm_xgb_results/skymapper_xgb_predictions_gaiaplot_80train.pdf')

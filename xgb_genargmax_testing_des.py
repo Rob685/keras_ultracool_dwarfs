@@ -126,7 +126,6 @@ dwarfs_pred = gaia_test[gaia_test['xgb_predictions'] == 'dwarf']
 
 
 print('giant/dwarf ratio is:', len(giants_pred)/len(dwarfs_pred))
-print('Length of training set:' len())
 print('Giant predictions:', len(giants_pred))
 print('Dwarf predictions:', len(dwarfs_pred))
 
