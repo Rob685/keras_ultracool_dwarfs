@@ -77,7 +77,7 @@ refset_4preds = refset[['MAG_AUTO_I', 'MAG_AUTO_Z',
 
 refset_4preds = refset_4preds.rename(index=str, columns={#"Hmag": "h_m",
                                                          #"Jmag": "j_m",
-                                                         #"Kmag": "k_m", 
+                                                         #"Kmag": "k_m",
                                                          "W1mag": "w1mpro", "W2mag": "w2mpro"})
 print('refset read')
 
@@ -166,4 +166,4 @@ blue_patch = mpatches.Patch(color=b, label='giants')
 sns.reset_orig
 plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
-plt.savefig('/Users/roberttejada/Desktop/des_xgb_results/des_xgb_predictions_gaiaplot_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/des_xgb_results/des_xgb_predictions_gaiaplot.pdf')

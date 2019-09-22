@@ -110,7 +110,7 @@ g_rp = smrefset_wpreds['phot_g_mean_mag'] - smrefset_wpreds['phot_rp_mean_mag']
 
 smrefset_wpreds['g_rp'] = g_rp
 smrefset_wpreds.to_csv(
-    '/Users/roberttejada/Desktop/sm_xgb_results/skymapper_refset_wpredictions_80train.csv')
+    '/Users/roberttejada/Desktop/sm_xgb_results/skymapper_refset_wpredictions.csv')
 
 # In[ ]:
 
@@ -167,4 +167,4 @@ blue_patch = mpatches.Patch(color=b, label='giants')
 sns.reset_orig
 plt.legend(handles=[black_patch, blue_patch])
 plt.minorticks_on()
-plt.savefig('/Users/roberttejada/Desktop/sm_xgb_results/skymapper_xgb_predictions_gaiaplot_80train.pdf')
+plt.savefig('/Users/roberttejada/Desktop/sm_xgb_results/skymapper_xgb_predictions_gaiaplot.pdf')
