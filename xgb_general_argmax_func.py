@@ -13,7 +13,7 @@ from datetime import datetime
 import os
 
 
-def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
+def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter,n_estimators):
     """
         Arguments:
             survey: could be either 'skymapper' or 'des' (dtype=str)
@@ -56,16 +56,16 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
 
         model = XGBClassifier(silent=False,
                               scale_pos_weight=0.5,
-                              eta=0.1,
-                              colsample_bytree=0.8,
+                              eta=0.5, #changed here to 0.5 from 0.1 to test (09/29)
+                              #colsample_bytree=0.8, tookout to test (09/29)
                               subsample=0.5,
                               objective='binary:logistic',
-                              n_estimators=100,
-                              reg_alpha=0.5,
+                              n_estimators=n_estimators,
+                              #alpha=0.5, took off to test (09/29)
                               max_delta_step=5,
-                              max_depth=10,
-                              gamma=10,
-                              tree_method='approx')
+                              max_depth=5, #changed here to 5 from 10 to test (09/29)
+                              #gamma=10, took out to test (09/29)
+                              tree_method='exact') #changed to exact from approx to test (09/29ß)
 
         eval_set = [(X_train, y_train), (X_test, y_test)]
         model.fit(X_train, y_train, eval_metric=["error", "rmse", "logloss"],
@@ -92,7 +92,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     print('\n')
     print("Max Accuracy: %.10f%%" % (np.max(accuracy_arr)*100))
 
-    plt.hist(accuracy_arr, histtype='step', bins=100, color='k')
+    plt.hist(accuracy_arr, histtype='step', bins=10, color='k')
     plt.xlabel('Accuracy Score')
     plt.ylabel('Frequency of Occurence')
     plt.title('Accuracy Distribution')
@@ -114,4 +114,27 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter):
     plot_importance(best_model)
     plt.savefig(directory + 'feature_importance_plot.pdf')
     print('Length of training set:', len(train_colors))
+
+    results = best_model.evals_result()
+    epochs = range(len(best_results['validation_0']['error']))
+    # plot log loss
+    fig, ax = plt.subplots(3, 1, figsize=(10, 10))
+    ax[0].plot(epochs, results['validation_0']['logloss'], 'k--', label='Train')
+    ax[0].plot(epochs, results['validation_1']['logloss'], label='Validation', lw=6, alpha=0.5)
+    ax[0].legend()
+    ax[0].set_ylabel('Log Loss')
+
+    ax[1].plot(epochs, results['validation_0']['error'], 'k--', label='Train')
+    ax[1].plot(epochs, results['validation_1']['error'], label='Validation', lw=5, alpha=0.5)
+    ax[1].legend()
+    ax[1].set_ylabel('Classification Error')
+
+    ax[2].plot(epochs, results['validation_0']['rmse'], 'k--', label='Train')
+    ax[2].plot(epochs, results['validation_1']['rmse'], label='Validation', lw=5, alpha=0.5)
+    ax[2].legend()
+    ax[2].set_ylabel('RMS Error')
+
+    plt.tight_layout()
+    plt.savefig(directory + 'metric_plots.pdf')
+    plt.show()
     return best_preds, best_model, best_results, all_results
