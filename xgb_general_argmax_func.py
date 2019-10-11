@@ -13,10 +13,11 @@ from datetime import datetime
 import os
 
 
-def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter,n_estimators):
+def XGBoost_Model(survey, path, train_data, feature_list, labels, test_size, n_iter,n_estimators):
     """
         Arguments:
             survey: could be either 'skymapper' or 'des' (dtype=str)
+            path: path to where the results will be saved
             train_data: labeled data to train XGBoost.
             feature_list: list of magnitudes to train over.
             labels: list of labels from the train_data.
@@ -42,7 +43,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter,n_
     train_colors = ccombinator(tmags3).join(tmags3, how='outer')
     ytarget = tmags2[labels]
     today = datetime.now()
-    path = '/Users/roberttejada/Desktop/'
+    path = path
     directory = path + survey + today.strftime('%Y%m%d') + '/'
     os.makedirs(directory)
 
@@ -96,7 +97,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter,n_
     plt.xlabel('Accuracy Score')
     plt.ylabel('Frequency of Occurence')
     plt.title('Accuracy Distribution')
-    plt.savefig(directory + 'accuracy_distribution_training_80train.pdf')
+    plt.savefig(directory + 'accuracy_distribution.pdf')
 
     best_preds = prediction_arr[np.argmax(accuracy_arr)]
 
@@ -111,6 +112,7 @@ def XGBoost_Model(survey, train_data, feature_list, labels, test_size, n_iter,n_
     print('Confusion Matrix:', conmatrix)
     print('Best Training predictions:', Counter(best_preds))
 
+    plt.figure(figsize=(8,8))
     plot_importance(best_model)
     plt.savefig(directory + 'feature_importance_plot.pdf')
     print('Length of training set:', len(train_colors))

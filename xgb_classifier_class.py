@@ -30,7 +30,7 @@ class XGBoost_Class:
         self.n_iter = n_iter
         self.n_estimators = n_estimators
 
-    def xgboost_classifier(self):
+    def xgboost_classifier(self,survey,train_data_feature_list,labels,test_size,n_iter,n_estimators):
         """
             Arguments:
                 survey: could be either 'skymapper' or 'des' (dtype=str)
