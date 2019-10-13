@@ -13,7 +13,7 @@ from datetime import datetime
 import os
 
 
-def XGBoost_Model(survey, path, train_data, feature_list, labels, test_size, n_iter,n_estimators):
+def XGBoost_Model(survey, path, train_data, feature_list, labels, test_size, n_iter, n_estimators):
     """
         Arguments:
             survey: could be either 'skymapper' or 'des' (dtype=str)
@@ -57,16 +57,16 @@ def XGBoost_Model(survey, path, train_data, feature_list, labels, test_size, n_i
 
         model = XGBClassifier(silent=False,
                               scale_pos_weight=0.5,
-                              eta=0.5, #changed here to 0.5 from 0.1 to test (09/29)
-                              #colsample_bytree=0.8, tookout to test (09/29)
+                              eta=0.5,  # changed here to 0.5 from 0.1 to test (09/29)
+                              # colsample_bytree=0.8, tookout to test (09/29)
                               subsample=0.5,
                               objective='binary:logistic',
                               n_estimators=n_estimators,
-                              #alpha=0.5, took off to test (09/29)
+                              # alpha=0.5, took off to test (09/29)
                               max_delta_step=5,
-                              max_depth=5, #changed here to 5 from 10 to test (09/29)
-                              #gamma=10, took out to test (09/29)
-                              tree_method='exact') #changed to exact from approx to test (09/29ß)
+                              max_depth=5,  # changed here to 5 from 10 to test (09/29)
+                              # gamma=10, took out to test (09/29)
+                              tree_method='exact')  # changed to exact from approx to test (09/29ß)
 
         eval_set = [(X_train, y_train), (X_test, y_test)]
         model.fit(X_train, y_train, eval_metric=["error", "rmse", "logloss"],
@@ -74,7 +74,7 @@ def XGBoost_Model(survey, path, train_data, feature_list, labels, test_size, n_i
         results = model.evals_result()
 
         # make predictions for test data
-        predictions = model.predict(X_test)
+        predictions = model.predict_proba(X_test)
         accuracy = accuracy_score(y_test, predictions)
         print("Accuracy: %.10f%%" % (accuracy * 100.0))
         accuracy_arr.append(accuracy)
@@ -112,7 +112,7 @@ def XGBoost_Model(survey, path, train_data, feature_list, labels, test_size, n_i
     print('Confusion Matrix:', conmatrix)
     print('Best Training predictions:', Counter(best_preds))
 
-    plt.figure(figsize=(8,8))
+    plt.figure(figsize=(8, 8))
     plot_importance(best_model)
     plt.savefig(directory + 'feature_importance_plot.pdf')
     print('Length of training set:', len(train_colors))
