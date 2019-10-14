@@ -3,6 +3,7 @@ import numpy as np
 from collections import Counter
 from xgboost import XGBClassifier
 from xgboost import plot_importance
+import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
@@ -55,32 +56,37 @@ def XGBoost_Model(survey, path, train_data, feature_list, labels, test_size, n_i
         X_train, X_test, y_train, y_test = train_test_split(
             train_colors, ytarget, test_size=test_size)
 
+        param = {'silet': False, 'scale_pos_weight': 0.5, 'eta': 0.5,
+                 'objective': 'binary:logistic', 'n_estimators': n_estimators,
+                 'max_delta_step': 5, 'max_depth': 5, 'tree_method': 'exact'}
+
+        eval_set = [(X_train, y_train), (X_test, y_test)]
+
         model = XGBClassifier(silent=False,
                               scale_pos_weight=0.5,
                               eta=0.5,  # changed here to 0.5 from 0.1 to test (09/29)
-                              # colsample_bytree=0.8, tookout to test (09/29)
+                              colsample_bytree=0.8,  # tookout to test (09/29)
                               subsample=0.5,
                               objective='binary:logistic',
                               n_estimators=n_estimators,
-                              # alpha=0.5, took off to test (09/29)
+                              alpha=0.5,  # took off to test (09/29)
                               max_delta_step=5,
                               max_depth=5,  # changed here to 5 from 10 to test (09/29)
-                              # gamma=10, took out to test (09/29)
+                              gamma=10,  # took out to test (09/29)
                               tree_method='exact')  # changed to exact from approx to test (09/29ß)
 
-        eval_set = [(X_train, y_train), (X_test, y_test)]
-        model.fit(X_train, y_train, eval_metric=["error", "rmse", "logloss"],
-                  eval_set=eval_set, verbose=True)
+        # modelXG.fit(X_train, y_train, eval_metric=["error", "rmse", "logloss"],
+        # eval_set=eval_set, verbose=True)
         results = model.evals_result()
 
         # make predictions for test data
-        predictions = model.predict_proba(X_test)
+        predictions = modelXG.predict(X_test)
         accuracy = accuracy_score(y_test, predictions)
         print("Accuracy: %.10f%%" % (accuracy * 100.0))
         accuracy_arr.append(accuracy)
         prediction_arr.append(predictions)
         # evaluation_metrics_arr.append(eval_set)
-        model_arr.append(model)
+        model_arr.append(modelXG)
         results_arr.append(results)
         print('Finished with step:', i)
 
